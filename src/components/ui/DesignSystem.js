@@ -15,9 +15,9 @@ const slideUp = keyframes`
 `;
 
 const pulse = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(110, 231, 255, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(110, 231, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(110, 231, 255, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
 `;
 
 // Container components
@@ -39,17 +39,17 @@ export const Section = styled.section`
 
 // Card components
 export const Card = styled.div`
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9));
+  border: 1px solid #e2e8f0;
   border-radius: var(--radius);
   padding: ${props => props.padding || '1.5rem'};
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 1px 3px rgba(148, 163, 184, 0.1), 0 1px 2px rgba(148, 163, 184, 0.06);
   backdrop-filter: blur(6px);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15), 0 2px 4px rgba(59, 130, 246, 0.08);
   }
 `;
 
@@ -73,7 +73,7 @@ export const FeatureCard = styled(Card)`
   }
   
   svg {
-    color: var(--primary);
+    color: #059669;
   }
 `;
 
@@ -85,13 +85,13 @@ export const Button = styled.button`
   padding: 0.85rem 1.25rem;
   font-weight: 600;
   font-size: ${props => props.size === 'large' ? '1.125rem' : '1rem'};
-  color: ${props => props.variant === 'secondary' ? 'var(--text)' : '#0b1220'};
+  color: ${props => props.variant === 'secondary' ? '#334155' : '#ffffff'};
   background: ${props => props.variant === 'secondary' 
-    ? 'linear-gradient(180deg, #334155, #1f2937)'
-    : 'linear-gradient(180deg, var(--primary), var(--primary-600))'};
+    ? 'linear-gradient(180deg, #f8fafc, #e2e8f0)'
+    : 'linear-gradient(180deg, #059669, #047857)'};
   box-shadow: ${props => props.variant === 'secondary'
-    ? '0 4px 16px rgba(15, 23, 42, 0.5)'
-    : '0 6px 18px rgba(34, 211, 238, 0.35)'};
+    ? '0 2px 8px rgba(148, 163, 184, 0.25)'
+    : '0 4px 12px rgba(5, 150, 105, 0.3)'};
   cursor: pointer;
   transition: transform 0.04s ease, filter 0.2s ease, box-shadow 0.2s ease;
   display: inline-flex;
@@ -102,8 +102,8 @@ export const Button = styled.button`
   &:hover {
     filter: brightness(1.05);
     box-shadow: ${props => props.variant === 'secondary'
-      ? '0 6px 20px rgba(15, 23, 42, 0.6)'
-      : '0 10px 24px rgba(34, 211, 238, 0.45)'};
+      ? '0 4px 12px rgba(148, 163, 184, 0.3)'
+      : '0 6px 16px rgba(5, 150, 105, 0.4)'};
   }
   
   &:active {
@@ -128,16 +128,17 @@ export const IconButton = styled.button`
   width: ${props => props.size || '40px'};
   height: ${props => props.size || '40px'};
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  color: var(--text);
+  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.9));
+  color: #64748b;
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-    color: var(--primary);
+    background: linear-gradient(180deg, rgba(240, 253, 250, 0.95), rgba(236, 253, 245, 0.9));
+    color: #059669;
     transform: translateY(-1px);
+    border-color: #a7f3d0;
   }
   
   &:active {
@@ -159,14 +160,14 @@ export const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: var(--text);
+  color: #374151;
 `;
 
 export const Input = styled.input`
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
   padding: 0.85rem 1rem;
   border-radius: 12px;
   outline: none;
@@ -174,38 +175,40 @@ export const Input = styled.input`
   font-size: 1rem;
   
   &::placeholder {
-    color: #6b7280;
+    color: #9ca3af;
   }
   
   &:focus {
-    border-color: var(--primary-600);
-    box-shadow: 0 0 0 4px var(--ring);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: #fefefe;
   }
   
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background: #f9fafb;
   }
 `;
 
 export const Select = styled.select`
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
   padding: 0.85rem 1rem;
   border-radius: 12px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   font-size: 1rem;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M8 11.5l-5-5 1.5-1.5L8 8.5 11.5 5 13 6.5l-5 5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M8 11.5l-5-5 1.5-1.5L8 8.5 11.5 5 13 6.5l-5 5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   
   &:focus {
-    border-color: var(--primary-600);
-    box-shadow: 0 0 0 4px var(--ring);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 `;
 
@@ -218,16 +221,16 @@ export const Checkbox = styled.div`
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 1px solid var(--border);
+    border: 1px solid #d1d5db;
     border-radius: 6px;
     margin-right: 0.75rem;
-    background: var(--surface);
+    background: #ffffff;
     position: relative;
     cursor: pointer;
     
     &:checked {
-      background: var(--primary-600);
-      border-color: var(--primary-600);
+      background: #059669;
+      border-color: #059669;
       
       &:after {
         content: '';
@@ -243,18 +246,19 @@ export const Checkbox = styled.div`
     }
     
     &:focus {
-      box-shadow: 0 0 0 4px var(--ring);
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
     }
   }
   
   label {
     cursor: pointer;
     user-select: none;
+    color: #374151;
   }
 `;
 
 export const ErrorMessage = styled.p`
-  color: var(--danger);
+  color: #dc2626;
   font-size: 0.875rem;
   margin-top: 0.5rem;
   margin-bottom: 0;
@@ -267,8 +271,8 @@ export const NavBar = styled.nav`
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+  border-bottom: 1px solid #e2e8f0;
   backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
@@ -283,7 +287,7 @@ export const NavBar = styled.nav`
 export const NavLogo = styled(Link)`
   font-weight: 800;
   font-size: 1.25rem;
-  color: var(--text);
+  color: #1f2937;
   text-decoration: none;
   letter-spacing: 0.2px;
   display: flex;
@@ -291,11 +295,11 @@ export const NavLogo = styled(Link)`
   gap: 0.5rem;
   
   &:hover {
-    color: var(--primary);
+    color: #059669;
   }
   
   svg {
-    color: var(--primary);
+    color: #059669;
   }
 `;
 
@@ -311,18 +315,18 @@ export const NavLinks = styled.div`
 
 export const NavLink = styled(Link)`
   text-decoration: none;
-  color: var(--text);
+  color: #64748b;
   font-weight: 600;
   position: relative;
   padding: 0.25rem 0;
   transition: color 0.2s ease;
   
   &:hover {
-    color: var(--primary);
+    color: #059669;
   }
   
   &.active {
-    color: var(--primary);
+    color: #059669;
     
     &:after {
       content: '';
@@ -331,7 +335,7 @@ export const NavLink = styled(Link)`
       left: 0;
       width: 100%;
       height: 2px;
-      background: var(--primary);
+      background: #059669;
       border-radius: 2px;
       animation: ${slideUp} 0.2s ease-out;
     }
@@ -348,22 +352,22 @@ export const StatusBadge = styled.span`
   font-weight: 500;
   background: ${props => {
     switch(props.status) {
-      case 'online': return 'rgba(34, 197, 94, 0.2)';
-      case 'offline': return 'rgba(156, 163, 175, 0.2)';
-      case 'pending': return 'rgba(245, 158, 11, 0.2)';
-      case 'confirmed': return 'rgba(34, 211, 238, 0.2)';
-      case 'completed': return 'rgba(167, 139, 250, 0.2)';
-      default: return 'rgba(156, 163, 175, 0.2)';
+      case 'online': return 'rgba(34, 197, 94, 0.15)';
+      case 'offline': return 'rgba(156, 163, 175, 0.15)';
+      case 'pending': return 'rgba(251, 191, 36, 0.15)';
+      case 'confirmed': return 'rgba(59, 130, 246, 0.15)';
+      case 'completed': return 'rgba(139, 92, 246, 0.15)';
+      default: return 'rgba(156, 163, 175, 0.15)';
     }
   }};
   color: ${props => {
     switch(props.status) {
-      case 'online': return 'var(--success)';
-      case 'offline': return 'var(--text-muted)';
-      case 'pending': return 'var(--warning)';
-      case 'confirmed': return 'var(--primary)';
-      case 'completed': return 'var(--accent)';
-      default: return 'var(--text-muted)';
+      case 'online': return '#059669';
+      case 'offline': return '#6b7280';
+      case 'pending': return '#d97706';
+      case 'confirmed': return '#2563eb';
+      case 'completed': return '#7c3aed';
+      default: return '#6b7280';
     }
   }};
   
@@ -373,7 +377,7 @@ export const StatusBadge = styled.span`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--success);
+    background: #22c55e;
     margin-right: 0.5rem;
     animation: ${pulse} 2s infinite;
   }
@@ -417,7 +421,7 @@ export const Title = styled.h1`
   line-height: 1.2;
   font-weight: 800;
   margin-bottom: ${props => props.mb || '1rem'};
-  color: var(--text);
+  color: #1f2937;
   
   @media (max-width: 768px) {
     font-size: ${props => {
@@ -437,13 +441,13 @@ export const Subtitle = styled.h2`
   line-height: 1.4;
   font-weight: 600;
   margin-bottom: ${props => props.mb || '0.75rem'};
-  color: var(--text);
+  color: #374151;
 `;
 
 export const Text = styled.p`
   font-size: ${props => props.size === 'sm' ? '0.875rem' : '1rem'};
   line-height: 1.7;
-  color: ${props => props.muted ? 'var(--text-muted)' : 'var(--text)'};
+  color: ${props => props.muted ? '#6b7280' : '#374151'};
   margin-bottom: ${props => props.mb || '1rem'};
 `;
 
@@ -451,7 +455,7 @@ export const Text = styled.p`
 export const Divider = styled.hr`
   border: 0;
   height: 1px;
-  background: var(--border);
+  background: #e5e7eb;
   margin: ${props => props.my || '1.5rem'} 0;
   width: 100%;
 `;
@@ -464,14 +468,12 @@ const spin = keyframes`
 export const Loader = styled.div`
   width: ${props => props.size || '24px'};
   height: ${props => props.size || '24px'};
-  border: 2px solid rgba(110, 231, 255, 0.3);
+  border: 2px solid rgba(5, 150, 105, 0.2);
   border-radius: 50%;
-  border-top-color: var(--primary);
+  border-top-color: #059669;
   animation: ${spin} 0.8s linear infinite;
   margin: ${props => props.center ? '0 auto' : '0'};
 `;
-
-
 
 export default {
   Container,
