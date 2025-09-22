@@ -61,13 +61,13 @@
 /* === BUTTON VARIANTS === */
 /* Primary Button */
 .btn--primary {
-  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+  background: #059669;
   color: var(--color-text-inverse);
   box-shadow: var(--shadow-sm);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-800));
+  background: #047857;
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
@@ -97,13 +97,13 @@
 /* Outline Button */
 .btn--outline {
   background: transparent;
-  color: var(--color-primary-600);
-  border: 1px solid var(--color-primary-300);
+  color: #059669;
+  border: 1px solid #34d399;
 }
 
 .btn--outline:hover:not(:disabled) {
-  background: var(--color-primary-50);
-  border-color: var(--color-primary-400);
+  background: #ecfdf5;
+  border-color: #10b981;
   transform: translateY(-1px);
 }
 
@@ -114,13 +114,13 @@
 /* Ghost Button */
 .btn--ghost {
   background: transparent;
-  color: var(--color-text-secondary);
+  color: #6b7280;
   border: 1px solid transparent;
 }
 
 .btn--ghost:hover:not(:disabled) {
-  background: var(--color-neutral-100);
-  color: var(--color-text-primary);
+  background: #f9fafb;
+  color: #374151;
   transform: translateY(-1px);
 }
 
@@ -243,7 +243,7 @@
 
 /* === ACCESSIBILITY === */
 .btn:focus-visible {
-  outline: 2px solid var(--color-primary-500);
+  outline: 2px solid #10b981;
   outline-offset: 2px;
 }
 

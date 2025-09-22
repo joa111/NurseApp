@@ -197,7 +197,7 @@
 /* === ACCESSIBILITY UTILITIES === */
 /* Focus utilities */
 .focus\:outline-none:focus { outline: none; }
-.focus\:outline-primary:focus { outline: 2px solid var(--color-primary-500); }
+.focus\:outline-primary:focus { outline: 2px solid #22c55e; }
 .focus\:outline-success:focus { outline: 2px solid var(--color-success-500); }
 .focus\:outline-warning:focus { outline: 2px solid var(--color-warning-500); }
 .focus\:outline-error:focus { outline: 2px solid var(--color-error-500); }

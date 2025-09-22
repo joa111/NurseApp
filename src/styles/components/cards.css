@@ -135,7 +135,7 @@
 }
 
 .card--info {
-  border-left: 4px solid var(--color-primary-500);
+  border-left: 4px solid #22c55e;
 }
 
 /* === CARD SIZES === */
@@ -224,7 +224,7 @@
   height: 24px;
   margin: -12px 0 0 -12px;
   border: 2px solid var(--color-border-medium);
-  border-top-color: var(--color-primary-600);
+  border-top-color: #059669;
   border-radius: 50%;
   animation: card-spin 1s linear infinite;
   z-index: 2;

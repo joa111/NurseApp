@@ -52,14 +52,14 @@
 }
 
 .footer__logo:hover {
-  color: var(--color-primary-600);
+  color: #059669;
   text-decoration: none;
 }
 
 .footer__logo-icon {
   width: 24px;
   height: 24px;
-  color: var(--color-primary-600);
+  color: #059669;
 }
 
 .footer__description {
@@ -88,8 +88,8 @@
 }
 
 .footer__social-link:hover {
-  background: var(--color-primary-100);
-  color: var(--color-primary-600);
+  background: #dcfce7;
+  color: #059669;
   transform: translateY(-1px);
   text-decoration: none;
 }
@@ -130,7 +130,7 @@
 }
 
 .footer__link:hover {
-  color: var(--color-primary-600);
+  color: #059669;
   text-decoration: none;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .footer__contact-item:hover {
-  color: var(--color-primary-600);
+  color: #059669;
   text-decoration: none;
 }
 
@@ -216,8 +216,8 @@
 
 /* === FOOTER NEWSLETTER === */
 .footer__newsletter {
-  background: var(--color-primary-50);
-  border: 1px solid var(--color-primary-200);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   margin-bottom: var(--space-8);

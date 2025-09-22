@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
+import { 
+  Container,
+  Section,
+  Card,
+  Button,
+  Title,
+  Text,
+  StatusBadge,
+  Flex,
+  Grid,
+  Loader,
+  Checkbox
+} from '../components/ui/DesignSystem';
 import { 
   collection, 
   query, 
@@ -15,8 +26,6 @@ import {
   arrayUnion,
   Timestamp
 } from 'firebase/firestore';
-
-// remove styled-components usage; use CSS utility classes instead
 
 const DashboardPage = () => {
   const { currentUser } = useAuth();
@@ -150,113 +159,121 @@ const DashboardPage = () => {
 
   if (loading) {
     return (
-      <section className="center">
-        <div className="stack text-center">
-          <div>Loading...</div>
-          <p className="text-secondary">Loading your dashboard...</p>
-        </div>
-      </section>
+      <Section>
+        <Container>
+          <Flex direction="column" align="center" justify="center" style={{ minHeight: '400px' }}>
+            <Loader size="48px" center />
+            <Text style={{ marginTop: '1rem', textAlign: 'center' }}>Loading your dashboard...</Text>
+          </Flex>
+        </Container>
+      </Section>
     );
   }
 
   return (
-    <section className="section bg-secondary">
-      <div className="container">
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <div className="flex items-center gap-3">
-            <h1>Welcome, {nurseProfile?.fullName}</h1>
-            <span className={`badge ${isOnline ? 'badge--success' : 'badge--neutral'}`}>
+    <Section>
+      <Container>
+        <Flex justify="space-between" align="center" wrap="wrap" gap="1rem" style={{ marginBottom: '2rem' }}>
+          <Flex align="center" gap="0.75rem">
+            <Title size="lg" mb="0">Welcome, {nurseProfile?.fullName}</Title>
+            <StatusBadge status={isOnline ? 'online' : 'offline'}>
               {isOnline ? 'Active' : 'Offline'}
-            </span>
-          </div>
-          <label className="flex items-center gap-2 cursor-pointer text-sm text-secondary">
-            <input type="checkbox" className="sr-only" checked={isOnline} onChange={toggleOnlineStatus} />
-            <span className={`toggle ${isOnline ? 'toggle--on' : 'toggle--off'}`} aria-hidden="true" />
-            <span className="font-medium">{isOnline ? 'Available for requests' : 'Not accepting requests'}</span>
-          </label>
-        </div>
+            </StatusBadge>
+          </Flex>
+          
+          <Flex align="center" gap="0.5rem">
+            <Checkbox>
+              <input 
+                type="checkbox" 
+                checked={isOnline} 
+                onChange={toggleOnlineStatus}
+              />
+              <label>
+                {isOnline ? 'Available for requests' : 'Not accepting requests'}
+              </label>
+            </Checkbox>
+          </Flex>
+        </Flex>
 
-        <div className="stack">
-          <section className="card">
-            <div className="card__body">
-              <h2 className="mb-4">Incoming Requests</h2>
-          {incomingRequests.length === 0 ? (
-                <div className="text-center text-tertiary p-8">
-                  <div className="text-3xl mb-2">📋</div>
-                  <p className="text-lg mb-1">No incoming requests</p>
-                  <p>You'll be notified when new requests come in</p>
-                </div>
-          ) : (
-                <div className="card-list">
-                  {incomingRequests.map((request) => (
-                    <Card key={request.id}>
-                      <div>
-                        <h3>{request.patientName}</h3>
-                        <p>{request.serviceDetails?.serviceType}</p>
-                        <p>{request.serviceDetails?.scheduledDateTime ? 
-                          (request.serviceDetails.scheduledDateTime.toDate ? 
-                            new Date(request.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
-                            new Date(request.serviceDetails.scheduledDateTime).toLocaleString()
-                          ) : 'Date not available'}</p>
-                        <div className="flex gap-3 mt-4">
-                          <Button variant="primary" onClick={() => handleAcceptRequest(request.id)}>
-                            Accept
-                          </Button>
-                          <Button variant="outline" onClick={() => handleDeclineRequest(request.id)}>
-                            Decline
-                          </Button>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-          )}
-            </div>
-          </section>
+        <Grid columns={1} gap="2rem">
+          {/* Incoming Requests Section */}
+          <Card>
+            <Title size="md" mb="1.5rem">Incoming Requests</Title>
+            {incomingRequests.length === 0 ? (
+              <Flex direction="column" align="center" justify="center" style={{ padding: '3rem' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📋</div>
+                <Title size="sm" mb="0.5rem">No incoming requests</Title>
+                <Text muted mb="0">You'll be notified when new requests come in</Text>
+              </Flex>
+            ) : (
+              <Grid columns={1} gap="1rem">
+                {incomingRequests.map((request) => (
+                  <Card key={request.id} padding="1.25rem">
+                    <Title size="sm" mb="0.5rem">{request.patientName}</Title>
+                    <Text mb="0.5rem">{request.serviceDetails?.serviceType}</Text>
+                    <Text size="sm" muted mb="1rem">
+                      {request.serviceDetails?.scheduledDateTime ? 
+                        (request.serviceDetails.scheduledDateTime.toDate ? 
+                          new Date(request.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
+                          new Date(request.serviceDetails.scheduledDateTime).toLocaleString()
+                        ) : 'Date not available'}
+                    </Text>
+                    <Flex gap="0.75rem">
+                      <Button onClick={() => handleAcceptRequest(request.id)}>
+                        Accept
+                      </Button>
+                      <Button variant="secondary" onClick={() => handleDeclineRequest(request.id)}>
+                        Decline
+                      </Button>
+                    </Flex>
+                  </Card>
+                ))}
+              </Grid>
+            )}
+          </Card>
 
-          <section className="card">
-            <div className="card__body">
-              <h2 className="mb-4">Active Bookings</h2>
-          {activeBookings.length === 0 ? (
-                <div className="text-center text-tertiary p-8">
-                  <div className="text-3xl mb-2">📅</div>
-                  <p className="text-lg mb-1">No active bookings</p>
-                  <p>Your confirmed bookings will appear here</p>
-                </div>
-          ) : (
-                <div className="card-list">
-                  {activeBookings.map((booking) => (
-                    <Card key={booking.id}>
-                      <div>
-                        <h3>{booking.patientName}</h3>
-                        <p>{booking.serviceDetails?.serviceType}</p>
-                        <p>{booking.serviceDetails?.scheduledDateTime ? 
-                          (booking.serviceDetails.scheduledDateTime.toDate ? 
-                            new Date(booking.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
-                            new Date(booking.serviceDetails.scheduledDateTime).toLocaleString()
-                          ) : 'Date not available'}</p>
-                        <div className="flex gap-3 mt-4">
-                          {booking.status === 'confirmed' && (
-                            <Button variant="primary" onClick={() => handleMarkInProgress(booking.id)}>
-                              Start Service
-                            </Button>
-                          )}
-                          {booking.status === 'in-progress' && (
-                            <Button variant="success" onClick={() => handleMarkCompleted(booking.id)}>
-                              Mark Completed
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-          )}
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
+          {/* Active Bookings Section */}
+          <Card>
+            <Title size="md" mb="1.5rem">Active Bookings</Title>
+            {activeBookings.length === 0 ? (
+              <Flex direction="column" align="center" justify="center" style={{ padding: '3rem' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📅</div>
+                <Title size="sm" mb="0.5rem">No active bookings</Title>
+                <Text muted mb="0">Your confirmed bookings will appear here</Text>
+              </Flex>
+            ) : (
+              <Grid columns={1} gap="1rem">
+                {activeBookings.map((booking) => (
+                  <Card key={booking.id} padding="1.25rem">
+                    <Title size="sm" mb="0.5rem">{booking.patientName}</Title>
+                    <Text mb="0.5rem">{booking.serviceDetails?.serviceType}</Text>
+                    <Text size="sm" muted mb="1rem">
+                      {booking.serviceDetails?.scheduledDateTime ? 
+                        (booking.serviceDetails.scheduledDateTime.toDate ? 
+                          new Date(booking.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
+                          new Date(booking.serviceDetails.scheduledDateTime).toLocaleString()
+                        ) : 'Date not available'}
+                    </Text>
+                    <Flex gap="0.75rem">
+                      {booking.status === 'confirmed' && (
+                        <Button onClick={() => handleMarkInProgress(booking.id)}>
+                          Start Service
+                        </Button>
+                      )}
+                      {booking.status === 'in-progress' && (
+                        <Button onClick={() => handleMarkCompleted(booking.id)}>
+                          Mark Completed
+                        </Button>
+                      )}
+                    </Flex>
+                  </Card>
+                ))}
+              </Grid>
+            )}
+          </Card>
+        </Grid>
+      </Container>
+    </Section>
   );
 };
 

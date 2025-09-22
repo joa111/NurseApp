@@ -1,7 +1,4 @@
-/* Navigation Components - Sticky, accessible, mobile-first */
-/* Clean, minimal design with proper touch targets */
 
-/* === NAVIGATION CONTAINER === */
 .nav {
   position: sticky;
   top: 0;
@@ -39,14 +36,14 @@
 }
 
 .nav__brand:hover {
-  color: var(--color-primary-600);
+  color: #059669;
   text-decoration: none;
 }
 
 .nav__brand-icon {
   width: 24px;
   height: 24px;
-  color: var(--color-primary-600);
+  color: #059669;
 }
 
 .nav__brand-text {
@@ -267,8 +264,8 @@
 }
 
 .nav__mobile-link--active {
-  color: var(--color-primary-600);
-  background: var(--color-primary-50);
+  color: #059669;
+  background: #f0fdf4;
 }
 
 .nav__mobile-link-icon {
@@ -354,8 +351,8 @@
   position: absolute;
   top: -40px;
   left: var(--space-4);
-  background: var(--color-primary-600);
-  color: var(--color-text-inverse);
+  background: #059669;
+  color: #ffffff;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
   text-decoration: none;

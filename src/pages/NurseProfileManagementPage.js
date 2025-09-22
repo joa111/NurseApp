@@ -2,8 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import Input from '../components/ui/Input';
-import Button from '../components/ui/Button';
+import {
+  Container,
+  Section,
+  Card,
+  Button,
+  Title,
+  Subtitle,
+  Text,
+  Input,
+  Label,
+  FormGroup,
+  Grid,
+  Flex,
+  Loader,
+  ErrorMessage
+} from '../components/ui/DesignSystem';
 
 const NurseProfileManagementPage = () => {
   const { currentUser } = useAuth();
@@ -33,7 +47,7 @@ const NurseProfileManagementPage = () => {
             hourlyRate: data.rates?.hourlyRate || 0,
             emergencyRate: data.rates?.emergencyRate || 0,
             serviceRadius: data.availability?.serviceRadius || 0,
-            services: data.rates?.specialties.map(s => ({ name: s.name, rate: s.rate })) || [],
+            services: data.rates?.specialties?.map(s => ({ name: s.name, rate: s.rate })) || [],
             schedule: data.availability?.schedule || []
           });
         } else {
@@ -85,7 +99,6 @@ const NurseProfileManagementPage = () => {
         'rates.emergencyRate': formData.emergencyRate,
         'availability.serviceRadius': formData.serviceRadius,
         'rates.specialties': formData.services.map(s => ({ name: s.name, rate: s.rate })),
-        // Schedule updates would be more complex and might involve a dedicated component
       });
       setMessage("Profile updated successfully!");
     } catch (err) {
@@ -96,122 +109,145 @@ const NurseProfileManagementPage = () => {
 
   if (loading) {
     return (
-      <section className="center">
-        <p>Loading profile...</p>
-      </section>
+      <Section>
+        <Container>
+          <Flex direction="column" align="center" justify="center" style={{ minHeight: '400px' }}>
+            <Loader size="48px" center />
+            <Text style={{ marginTop: '1rem', textAlign: 'center' }}>Loading profile...</Text>
+          </Flex>
+        </Container>
+      </Section>
     );
   }
 
-  if (error) {
+  if (error && !nurseProfile) {
     return (
-      <section className="section">
-        <div className="container">
-          <div className="form-message form-message--error" role="alert">{error}</div>
-        </div>
-      </section>
+      <Section>
+        <Container>
+          <Card>
+            <ErrorMessage>{error}</ErrorMessage>
+          </Card>
+        </Container>
+      </Section>
     );
   }
 
   if (!nurseProfile) {
     return (
-      <section className="section">
-        <div className="container">
-          <div className="form-message form-message--warning">No nurse profile found. Please ensure you are registered.</div>
-        </div>
-      </section>
+      <Section>
+        <Container>
+          <Card>
+            <Text>No nurse profile found. Please ensure you are registered.</Text>
+          </Card>
+        </Container>
+      </Section>
     );
   }
 
   return (
-    <section className="section bg-secondary">
-      <div className="container" role="region" aria-labelledby="profile-title">
-        <div className="card">
-          <div className="card__body">
-            <h2 id="profile-title" className="mb-4">Manage Your Profile</h2>
+    <Section>
+      <Container>
+        <Card>
+          <Title size="lg" mb="1.5rem">Manage Your Profile</Title>
 
-            {message && <div className="form-message form-message--success" role="status">{message}</div>}
+          {message && (
+            <div style={{ 
+              padding: '1rem', 
+              backgroundColor: 'rgba(34, 197, 94, 0.15)', 
+              color: '#059669', 
+              borderRadius: '8px',
+              marginBottom: '1.5rem'
+            }}>
+              {message}
+            </div>
+          )}
 
-            <form className="form" onSubmit={handleUpdateProfile}>
-              <fieldset className="form-fieldset">
-                <legend className="form-legend">Rates</legend>
-                <div className="grid grid--cols-2 grid--gap-4">
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="hourlyRate">Hourly Rate ($)</label>
-                    <Input 
-                      id="hourlyRate"
-                      type="number"
-                      name="hourlyRate"
-                      value={formData.hourlyRate}
-                      onChange={handleChange}
-                      min="0"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label" htmlFor="emergencyRate">Emergency Rate ($)</label>
-                    <Input 
-                      id="emergencyRate"
-                      type="number"
-                      name="emergencyRate"
-                      value={formData.emergencyRate}
-                      onChange={handleChange}
-                      min="0"
-                      required
-                    />
-                  </div>
-                </div>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
-                <div className="form-group mt-4">
-                  <h4 className="mb-2">Specialty Rates</h4>
-                  {formData.services.length > 0 ? (
-                    <div className="stack">
-                      {formData.services.map(service => (
-                        <div className="grid grid--cols-2 grid--gap-4" key={service.name}>
-                          <div className="form-group">
-                            <label className="form-label">{service.name.replace('-', ' ').toUpperCase()}</label>
-                            <Input 
-                              type="number"
-                              name={`serviceRate-${service.name}`}
-                              value={service.rate}
-                              onChange={handleChange}
-                              min="0"
-                              required
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-secondary">No services defined. Please update your registration or contact support.</p>
-                  )}
-                </div>
-              </fieldset>
-
-              <fieldset className="form-fieldset">
-                <legend className="form-legend">Availability & Preferences</legend>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="serviceRadius">Service Radius (km)</label>
+          <form onSubmit={handleUpdateProfile}>
+            <Card padding="1.5rem" style={{ marginBottom: '2rem' }}>
+              <Subtitle size="lg" mb="1rem">Rates</Subtitle>
+              
+              <Grid columns={2} gap="1.5rem">
+                <FormGroup>
+                  <Label htmlFor="hourlyRate">Hourly Rate ($)</Label>
                   <Input 
-                    id="serviceRadius"
+                    id="hourlyRate"
                     type="number"
-                    name="serviceRadius"
-                    value={formData.serviceRadius}
+                    name="hourlyRate"
+                    value={formData.hourlyRate}
                     onChange={handleChange}
                     min="0"
                     required
                   />
-                </div>
-                <p className="text-secondary">Schedule management coming soon...</p>
-              </fieldset>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label htmlFor="emergencyRate">Emergency Rate ($)</Label>
+                  <Input 
+                    id="emergencyRate"
+                    type="number"
+                    name="emergencyRate"
+                    value={formData.emergencyRate}
+                    onChange={handleChange}
+                    min="0"
+                    required
+                  />
+                </FormGroup>
+              </Grid>
 
-              <div className="form-actions">
-                <Button type="submit" variant="primary">Save Profile</Button>
+              <div style={{ marginTop: '2rem' }}>
+                <Subtitle mb="1rem">Specialty Rates</Subtitle>
+                {formData.services.length > 0 ? (
+                  <Grid columns={1} gap="1rem">
+                    {formData.services.map(service => (
+                      <Grid columns={2} gap="1.5rem" key={service.name}>
+                        <FormGroup>
+                          <Label>{service.name.replace('-', ' ').toUpperCase()}</Label>
+                          <Input 
+                            type="number"
+                            name={`serviceRate-${service.name}`}
+                            value={service.rate}
+                            onChange={handleChange}
+                            min="0"
+                            required
+                          />
+                        </FormGroup>
+                      </Grid>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Text muted>No services defined. Please update your registration or contact support.</Text>
+                )}
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+            </Card>
+
+            <Card padding="1.5rem" style={{ marginBottom: '2rem' }}>
+              <Subtitle size="lg" mb="1rem">Availability & Preferences</Subtitle>
+              
+              <FormGroup>
+                <Label htmlFor="serviceRadius">Service Radius (km)</Label>
+                <Input 
+                  id="serviceRadius"
+                  type="number"
+                  name="serviceRadius"
+                  value={formData.serviceRadius}
+                  onChange={handleChange}
+                  min="0"
+                  required
+                />
+              </FormGroup>
+              
+              <Text muted size="sm">Schedule management coming soon...</Text>
+            </Card>
+
+            <Flex justify="flex-start">
+              <Button type="submit">Save Profile</Button>
+            </Flex>
+          </form>
+        </Card>
+      </Container>
+    </Section>
   );
 };
 

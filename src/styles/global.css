@@ -78,13 +78,13 @@ p {
 }
 
 a {
-  color: var(--color-text-link);
+  color: #059669;
   text-decoration: none;
-  transition: color var(--duration-fast) var(--easing-ease-out);
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--color-primary-700);
+  color: #047857;
   text-decoration: underline;
 }
 
@@ -175,7 +175,7 @@ select {
   border-radius: var(--radius-full);
   transition: left var(--duration-fast) var(--easing-ease-out);
 }
-.toggle--on { background: var(--color-primary-500); }
+.toggle--on { background: #059669; }
 .toggle--on::after { left: 22px; }
 
 /* Screen reader only content */
@@ -196,14 +196,14 @@ select {
   position: absolute;
   top: -40px;
   left: 6px;
-  background: var(--color-primary-600);
-  color: var(--color-text-inverse);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-md);
+  background: #059669;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
   text-decoration: none;
-  font-weight: var(--font-weight-medium);
+  font-weight: 500;
   z-index: var(--z-index-skip-link);
-  transition: top var(--duration-fast) var(--easing-ease-out);
+  transition: top 0.2s ease;
 }
 
 .skip-link:focus {
@@ -372,9 +372,9 @@ select {
 
 /* === FOCUS MANAGEMENT === */
 :focus-visible {
-  outline: 2px solid var(--color-primary-500);
+  outline: 2px solid #059669;
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
 }
 
 /* === SELECTION STYLES === */
