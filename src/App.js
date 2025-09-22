@@ -29,7 +29,6 @@ function App() {
               <Route path="/profile" element={<NurseProfileManagementPage />} />
             </Routes>
           </main>
-          <Footer />
         </div>
       </Router>
     </AuthProvider>

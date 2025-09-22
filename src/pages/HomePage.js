@@ -6,24 +6,6 @@ import Card from '../components/ui/Card';
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const features = [
-    {
-      icon: '🏥',
-      title: 'Trusted Healthcare',
-      description: 'Connect with verified nurses and healthcare professionals in your area.'
-    },
-    {
-      icon: '⚡',
-      title: 'Quick Matching',
-      description: 'Find the right nurse for your needs with our intelligent matching system.'
-    },
-    {
-      icon: '🔒',
-      title: 'Secure & Private',
-      description: 'Your health information is protected with enterprise-grade security.'
-    }
-  ];
-
   return (
     <>
       {/* Hero Section */}
