@@ -1,0 +1,288 @@
+/* Main CSS File - Modern, Minimal Healthcare Design System */
+/* Mobile-first, accessible, and performant */
+
+/* === DESIGN TOKENS === */
+@import './design-tokens.css';
+
+/* === GLOBAL STYLES === */
+@import './global.css';
+
+/* === COMPONENT STYLES === */
+@import './components/buttons.css';
+@import './components/forms.css';
+@import './components/navigation.css';
+@import './components/cards.css';
+@import './components/layout.css';
+@import './components/footer.css';
+
+/* === PAGE-SPECIFIC STYLES === */
+@import './pages/homepage.css';
+
+/* === UTILITY CLASSES === */
+/* Additional utility classes for common patterns */
+
+/* Text utilities */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-extrabold { font-weight: var(--font-weight-extrabold); }
+
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-inverse { color: var(--color-text-inverse); }
+.text-link { color: var(--color-text-link); }
+
+.text-success { color: var(--color-success-600); }
+.text-warning { color: var(--color-warning-600); }
+.text-error { color: var(--color-error-600); }
+
+/* Background utilities */
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-tertiary { background-color: var(--color-bg-tertiary); }
+.bg-elevated { background-color: var(--color-bg-elevated); }
+
+.bg-success { background-color: var(--color-success-50); }
+.bg-warning { background-color: var(--color-warning-50); }
+.bg-error { background-color: var(--color-error-50); }
+
+/* Border utilities */
+.border { border: 1px solid var(--color-border-medium); }
+.border-light { border: 1px solid var(--color-border-light); }
+.border-medium { border: 1px solid var(--color-border-medium); }
+.border-dark { border: 1px solid var(--color-border-dark); }
+
+.border-success { border-color: var(--color-success-500); }
+.border-warning { border-color: var(--color-warning-500); }
+.border-error { border-color: var(--color-error-500); }
+
+/* Border radius utilities */
+.rounded-none { border-radius: var(--radius-none); }
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-3xl { border-radius: var(--radius-3xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/* Shadow utilities */
+.shadow-none { box-shadow: var(--shadow-none); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+.shadow-2xl { box-shadow: var(--shadow-2xl); }
+
+/* Width utilities */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-fit { width: fit-content; }
+.w-max { width: max-content; }
+.w-min { width: min-content; }
+
+/* Height utilities */
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.h-fit { height: fit-content; }
+.h-max { height: max-content; }
+.h-min { height: min-content; }
+.h-screen { height: 100vh; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+.static { position: static; }
+
+/* Overflow utilities */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+.overflow-visible { overflow: visible; }
+
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-x-scroll { overflow-x: scroll; }
+
+.overflow-y-hidden { overflow-y: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-y-scroll { overflow-y: scroll; }
+
+/* Z-index utilities */
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+/* Opacity utilities */
+.opacity-0 { opacity: 0; }
+.opacity-25 { opacity: 0.25; }
+.opacity-50 { opacity: 0.5; }
+.opacity-75 { opacity: 0.75; }
+.opacity-100 { opacity: 1; }
+
+/* Cursor utilities */
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.cursor-default { cursor: default; }
+.cursor-move { cursor: move; }
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing; }
+
+/* User select utilities */
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+.select-auto { user-select: auto; }
+
+/* Pointer events utilities */
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+/* === RESPONSIVE UTILITIES === */
+/* Hide/show utilities for different screen sizes */
+@media (max-width: 640px) {
+  .sm\:hidden { display: none; }
+  .sm\:block { display: block; }
+  .sm\:flex { display: flex; }
+  .sm\:grid { display: grid; }
+}
+
+@media (max-width: 768px) {
+  .md\:hidden { display: none; }
+  .md\:block { display: block; }
+  .md\:flex { display: flex; }
+  .md\:grid { display: grid; }
+}
+
+@media (max-width: 1024px) {
+  .lg\:hidden { display: none; }
+  .lg\:block { display: block; }
+  .lg\:flex { display: flex; }
+  .lg\:grid { display: grid; }
+}
+
+@media (max-width: 1280px) {
+  .xl\:hidden { display: none; }
+  .xl\:block { display: block; }
+  .xl\:flex { display: flex; }
+  .xl\:grid { display: grid; }
+}
+
+/* === PRINT UTILITIES === */
+@media print {
+  .print\:hidden { display: none !important; }
+  .print\:block { display: block !important; }
+  .print\:text-black { color: black !important; }
+  .print\:bg-white { background: white !important; }
+}
+
+/* === ACCESSIBILITY UTILITIES === */
+/* Focus utilities */
+.focus\:outline-none:focus { outline: none; }
+.focus\:outline-primary:focus { outline: 2px solid var(--color-primary-500); }
+.focus\:outline-success:focus { outline: 2px solid var(--color-success-500); }
+.focus\:outline-warning:focus { outline: 2px solid var(--color-warning-500); }
+.focus\:outline-error:focus { outline: 2px solid var(--color-error-500); }
+
+/* Screen reader utilities */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.not-sr-only {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* === ANIMATION UTILITIES === */
+/* Transition utilities */
+.transition-none { transition: none; }
+.transition-all { transition: all var(--duration-fast) var(--easing-ease-out); }
+.transition-colors { transition: color var(--duration-fast) var(--easing-ease-out), background-color var(--duration-fast) var(--easing-ease-out); }
+.transition-opacity { transition: opacity var(--duration-fast) var(--easing-ease-out); }
+.transition-transform { transition: transform var(--duration-fast) var(--easing-ease-out); }
+
+/* Duration utilities */
+.duration-75 { transition-duration: 75ms; }
+.duration-100 { transition-duration: 100ms; }
+.duration-150 { transition-duration: 150ms; }
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+.duration-500 { transition-duration: 500ms; }
+.duration-700 { transition-duration: 700ms; }
+.duration-1000 { transition-duration: 1000ms; }
+
+/* Easing utilities */
+.ease-linear { transition-timing-function: linear; }
+.ease-in { transition-timing-function: var(--easing-ease-in); }
+.ease-out { transition-timing-function: var(--easing-ease-out); }
+.ease-in-out { transition-timing-function: var(--easing-ease-in-out); }
+
+/* === PERFORMANCE OPTIMIZATIONS === */
+/* GPU acceleration for animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smooth scrolling */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* === DARK MODE UTILITIES === */
+@media (prefers-color-scheme: dark) {
+  .dark\:text-primary { color: var(--color-text-primary); }
+  .dark\:text-secondary { color: var(--color-text-secondary); }
+  .dark\:text-tertiary { color: var(--color-text-tertiary); }
+  .dark\:bg-primary { background-color: var(--color-bg-primary); }
+  .dark\:bg-secondary { background-color: var(--color-bg-secondary); }
+  .dark\:bg-tertiary { background-color: var(--color-bg-tertiary); }
+  .dark\:bg-elevated { background-color: var(--color-bg-elevated); }
+}
+
+/* === HIGH CONTRAST MODE === */
+@media (prefers-contrast: high) {
+  .high-contrast\:border-2 { border-width: 2px; }
+  .high-contrast\:border-4 { border-width: 4px; }
+  .high-contrast\:text-bold { font-weight: var(--font-weight-bold); }
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  .motion-reduce\:transition-none { transition: none; }
+  .motion-reduce\:transform-none { transform: none; }
+  .motion-reduce\:animate-none { animation: none; }
+}

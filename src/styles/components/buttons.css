@@ -1,0 +1,275 @@
+/* Button Components - Touch-friendly, accessible design */
+/* Mobile-first approach with proper touch targets */
+
+.btn {
+  /* Base button styles */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  text-decoration: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--easing-ease-out);
+  position: relative;
+  overflow: hidden;
+  
+  /* Minimum touch target size for mobile */
+  min-height: var(--button-height-md);
+  min-width: var(--button-height-md);
+  
+  /* Focus management */
+  outline: none;
+}
+
+.btn:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* === BUTTON SIZES === */
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  min-height: var(--button-height-sm);
+  min-width: var(--button-height-sm);
+}
+
+.btn--md {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-base);
+  min-height: var(--button-height-md);
+  min-width: var(--button-height-md);
+}
+
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--font-size-lg);
+  min-height: var(--button-height-lg);
+  min-width: var(--button-height-lg);
+}
+
+/* === BUTTON VARIANTS === */
+/* Primary Button */
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-700));
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-800));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Secondary Button */
+.btn--secondary {
+  background: var(--color-neutral-100);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-medium);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-neutral-200);
+  border-color: var(--color-border-dark);
+  transform: translateY(-1px);
+}
+
+.btn--secondary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Outline Button */
+.btn--outline {
+  background: transparent;
+  color: var(--color-primary-600);
+  border: 1px solid var(--color-primary-300);
+}
+
+.btn--outline:hover:not(:disabled) {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-400);
+  transform: translateY(-1px);
+}
+
+.btn--outline:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Ghost Button */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--color-neutral-100);
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+}
+
+.btn--ghost:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Success Button */
+.btn--success {
+  background: linear-gradient(135deg, var(--color-success-500), var(--color-success-600));
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--success:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-success-600), var(--color-success-700));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn--success:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Error/Danger Button */
+.btn--error {
+  background: linear-gradient(135deg, var(--color-error-500), var(--color-error-600));
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--error:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-error-600), var(--color-error-700));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn--error:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* === BUTTON MODIFIERS === */
+.btn--full-width {
+  width: 100%;
+}
+
+.btn--loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: btn-spin 1s linear infinite;
+}
+
+@keyframes btn-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === BUTTON GROUPS === */
+.btn-group {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.btn-group--vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.btn-group--horizontal {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* === MOBILE OPTIMIZATIONS === */
+@media (max-width: 768px) {
+  .btn {
+    /* Ensure minimum 44px touch target on mobile */
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .btn--sm {
+    min-height: 40px;
+    min-width: 40px;
+    padding: var(--space-2) var(--space-3);
+  }
+  
+  .btn--lg {
+    min-height: 48px;
+    min-width: 48px;
+    padding: var(--space-3) var(--space-5);
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .btn-group--horizontal {
+    flex-direction: column;
+  }
+}
+
+/* === ACCESSIBILITY === */
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn {
+    border: 2px solid currentColor;
+  }
+  
+  .btn--outline,
+  .btn--ghost {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+  
+  .btn:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .btn--loading::after {
+    animation: none;
+  }
+}
