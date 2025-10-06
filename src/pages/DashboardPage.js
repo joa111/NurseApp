@@ -71,7 +71,7 @@ const DashboardPage = () => {
       collection(db, 'serviceRequests'),
       where('matching.selectedNurseId', '==', currentUser.uid),
       where('status', 'in', ['confirmed', 'in-progress']),
-      orderBy('serviceDetails.scheduledDateTime', 'asc')
+      orderBy('serviceDetails.scheduledDateTime.seconds', 'asc')
     );
 
     const unsubscribeBookings = onSnapshot(bookingsQuery, (snapshot) => {
@@ -157,6 +157,25 @@ const DashboardPage = () => {
     }
   };
 
+  const formattedScheduledDateTime = (scheduledDateTime) => {
+    if (!scheduledDateTime) return 'Date not available';
+    
+    // Handle Firestore Timestamp object with _seconds
+    if (scheduledDateTime._seconds) {
+      return new Date(scheduledDateTime._seconds * 1000).toLocaleString();
+    }
+    // Handle plain object with seconds
+    if (scheduledDateTime.seconds) {
+      return new Date(scheduledDateTime.seconds * 1000).toLocaleString();
+    }
+    // Handle Date object
+    if (scheduledDateTime instanceof Date) {
+      return scheduledDateTime.toLocaleString();
+    }
+    
+    return 'Date not available';
+  };
+
   if (loading) {
     return (
       <Section>
@@ -210,14 +229,15 @@ const DashboardPage = () => {
                 {incomingRequests.map((request) => (
                   <Card key={request.id} padding="1.25rem">
                     <Title size="sm" mb="0.5rem">{request.patientName}</Title>
-                    <Text mb="0.5rem">{request.serviceDetails?.serviceType}</Text>
-                    <Text size="sm" muted mb="1rem">
-                      {request.serviceDetails?.scheduledDateTime ? 
-                        (request.serviceDetails.scheduledDateTime.toDate ? 
-                          new Date(request.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
-                          new Date(request.serviceDetails.scheduledDateTime).toLocaleString()
-                        ) : 'Date not available'}
+                    <Text mb="0.5rem">{request.serviceDetails?.type}</Text>
+                    <Text size="sm" muted mb="0.5rem">
+                      Scheduled: {formattedScheduledDateTime(request.serviceDetails?.scheduledDateTime)}
                     </Text>
+                    {request.serviceDetails?.specialRequirements && (
+                      <Text size="sm" muted mb="1rem">
+                        Note: {request.serviceDetails.specialRequirements}
+                      </Text>
+                    )}
                     <Flex gap="0.75rem">
                       <Button onClick={() => handleAcceptRequest(request.id)}>
                         Accept
@@ -246,14 +266,20 @@ const DashboardPage = () => {
                 {activeBookings.map((booking) => (
                   <Card key={booking.id} padding="1.25rem">
                     <Title size="sm" mb="0.5rem">{booking.patientName}</Title>
-                    <Text mb="0.5rem">{booking.serviceDetails?.serviceType}</Text>
-                    <Text size="sm" muted mb="1rem">
-                      {booking.serviceDetails?.scheduledDateTime ? 
-                        (booking.serviceDetails.scheduledDateTime.toDate ? 
-                          new Date(booking.serviceDetails.scheduledDateTime.toDate()).toLocaleString() :
-                          new Date(booking.serviceDetails.scheduledDateTime).toLocaleString()
-                        ) : 'Date not available'}
+                    <Text mb="0.5rem">{booking.serviceDetails?.type}</Text>
+                    <Text size="sm" muted mb="0.5rem">
+                      Scheduled: {formattedScheduledDateTime(booking.serviceDetails?.scheduledDateTime)}
                     </Text>
+                    {booking.serviceDetails?.specialRequirements && (
+                      <Text size="sm" muted mb="0.5rem">
+                        Note: {booking.serviceDetails.specialRequirements}
+                      </Text>
+                    )}
+                    {booking.payment?.nursePayment?.amount && (
+                      <Text size="sm" muted mb="1rem">
+                        Payment: ₹{booking.payment.nursePayment.amount}
+                      </Text>
+                    )}
                     <Flex gap="0.75rem">
                       {booking.status === 'confirmed' && (
                         <Button onClick={() => handleMarkInProgress(booking.id)}>
