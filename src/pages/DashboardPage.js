@@ -189,6 +189,22 @@ const DashboardPage = () => {
     );
   }
 
+    // Show verification message if nurse is not verified
+    if (nurseProfile?.profileStatus === 'pending_verification') {
+      return (
+        <Section>
+          <Container>
+            <Card style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(253, 230, 138, 0.25)' }}>
+              <Title size="md" mb="1rem">Account Pending Verification</Title>
+              <Text muted mb="1.5rem">
+                Please wait for admin verification in order to accept new requests.<br />
+                You will be notified once your account is verified and you can start accepting patient requests.
+              </Text>
+            </Card>
+          </Container>
+        </Section>
+      );
+    }
   return (
     <Section>
       <Container>
