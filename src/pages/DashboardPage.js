@@ -24,6 +24,7 @@ import {
   orderBy,
   limit,
   arrayUnion,
+  arrayRemove,
   Timestamp
 } from 'firebase/firestore';
 
@@ -37,20 +38,39 @@ const DashboardPage = () => {
 
   // Fetch nurse profile and set up real-time listeners
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      console.log('No current user');
+      return;
+    }
+    
+    console.log('Current nurse ID:', currentUser.uid);
 
     // Listen to nurse profile
     const nurseRef = doc(db, 'nurses', currentUser.uid);
     const unsubscribeProfile = onSnapshot(nurseRef, (doc) => {
       if (doc.exists()) {
         const profile = doc.data();
+        console.log('Nurse profile loaded:', profile);
+        console.log('Nurse verification status:', profile.profileStatus);
         setNurseProfile(profile);
         setIsOnline(profile.availability?.isOnline || false);
+      } else {
+        console.log('Nurse profile does not exist!');
       }
     });
 
-    // Listen to incoming service requests
-    const requestsQuery = query(
+    // Listen to incoming service requests - UPDATED FOR MULTIPLE NURSES
+    // Query 1: New structure with array
+    const requestsQueryArray = query(
+      collection(db, 'serviceRequests'),
+      where('status', '==', 'pending-response'),
+      where('matching.selectedNurseIds', 'array-contains', currentUser.uid),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+
+    // Query 2: Old structure with single nurse (backward compatibility)
+    const requestsQuerySingle = query(
       collection(db, 'serviceRequests'),
       where('status', '==', 'pending-response'),
       where('matching.selectedNurseId', '==', currentUser.uid),
@@ -58,18 +78,35 @@ const DashboardPage = () => {
       limit(10)
     );
 
-    const unsubscribeRequests = onSnapshot(requestsQuery, (snapshot) => {
-      const requests = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setIncomingRequests(requests);
+    // Listen to both queries and merge results
+    const requestsMap = new Map();
+    
+    const unsubscribeRequests1 = onSnapshot(requestsQueryArray, (snapshot) => {
+      snapshot.docs.forEach(doc => {
+        requestsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+      setIncomingRequests(Array.from(requestsMap.values()).sort((a, b) => 
+        (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+      ).slice(0, 10));
+    }, (error) => {
+      console.log('Array query error (may not have documents yet):', error.message);
+    });
+
+    const unsubscribeRequests2 = onSnapshot(requestsQuerySingle, (snapshot) => {
+      snapshot.docs.forEach(doc => {
+        requestsMap.set(doc.id, { id: doc.id, ...doc.data() });
+      });
+      setIncomingRequests(Array.from(requestsMap.values()).sort((a, b) => 
+        (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+      ).slice(0, 10));
+    }, (error) => {
+      console.log('Single query error (may not have documents yet):', error.message);
     });
 
     // Listen to active bookings
     const bookingsQuery = query(
       collection(db, 'serviceRequests'),
-      where('matching.selectedNurseId', '==', currentUser.uid),
+      where('matching.selectedNurseId', '==', currentUser.uid), // Confirmed bookings still use single nurse
       where('status', 'in', ['confirmed', 'in-progress']),
       orderBy('serviceDetails.scheduledDateTime.seconds', 'asc')
     );
@@ -86,7 +123,8 @@ const DashboardPage = () => {
 
     return () => {
       unsubscribeProfile();
-      unsubscribeRequests();
+      unsubscribeRequests1();
+      unsubscribeRequests2();
       unsubscribeBookings();
     };
   }, [currentUser]);
@@ -102,10 +140,13 @@ const DashboardPage = () => {
     setIsOnline(newStatus);
   };
 
+  // UPDATED: Handle accept for multiple nurse selection
   const handleAcceptRequest = async (requestId) => {
     try {
       await updateDoc(doc(db, 'serviceRequests', requestId), {
         status: 'confirmed',
+        'matching.selectedNurseId': currentUser.uid, // Set the accepting nurse as the confirmed one
+        'matching.selectedNurseIds': [], // Clear the array - no longer needed
         'matching.confirmedAt': Timestamp.now()
       });
       
@@ -116,13 +157,25 @@ const DashboardPage = () => {
     }
   };
 
-  const handleDeclineRequest = async (requestId) => {
+  // UPDATED: Handle decline for multiple nurse selection
+  const handleDeclineRequest = async (requestId, request) => {
     try {
-      await updateDoc(doc(db, 'serviceRequests', requestId), {
-        status: 'finding-nurses',
-        'matching.selectedNurseId': null,
+      // Get remaining nurses after removing current nurse
+      const remainingNurses = (request.matching?.selectedNurseIds || [])
+        .filter(id => id !== currentUser.uid);
+      
+      const updateData = {
+        'matching.selectedNurseIds': remainingNurses,
         'matching.declinedBy': arrayUnion(currentUser.uid)
-      });
+      };
+
+      // If no nurses left in the array, revert to finding-nurses status
+      if (remainingNurses.length === 0) {
+        updateData.status = 'finding-nurses';
+        updateData['matching.selectedNurseId'] = null;
+      }
+
+      await updateDoc(doc(db, 'serviceRequests', requestId), updateData);
       
       alert('Request declined. It will be offered to another nurse.');
     } catch (error) {
@@ -189,22 +242,23 @@ const DashboardPage = () => {
     );
   }
 
-    // Show verification message if nurse is not verified
-    if (nurseProfile?.profileStatus === 'pending_verification') {
-      return (
-        <Section>
-          <Container>
-            <Card style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(253, 230, 138, 0.25)' }}>
-              <Title size="md" mb="1rem">Account Pending Verification</Title>
-              <Text muted mb="1.5rem">
-                Please wait for admin verification in order to accept new requests.<br />
-                You will be notified once your account is verified and you can start accepting patient requests.
-              </Text>
-            </Card>
-          </Container>
-        </Section>
-      );
-    }
+  // Show verification message if nurse is not verified
+  if (nurseProfile?.profileStatus === 'pending_verification') {
+    return (
+      <Section>
+        <Container>
+          <Card style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(253, 230, 138, 0.25)' }}>
+            <Title size="md" mb="1rem">Account Pending Verification</Title>
+            <Text muted mb="1.5rem">
+              Please wait for admin verification in order to accept new requests.<br />
+              You will be notified once your account is verified and you can start accepting patient requests.
+            </Text>
+          </Card>
+        </Container>
+      </Section>
+    );
+  }
+
   return (
     <Section>
       <Container>
@@ -244,7 +298,14 @@ const DashboardPage = () => {
               <Grid columns={1} gap="1rem">
                 {incomingRequests.map((request) => (
                   <Card key={request.id} padding="1.25rem">
-                    <Title size="sm" mb="0.5rem">{request.patientName}</Title>
+                    <Flex justify="space-between" align="start" mb="0.5rem">
+                      <Title size="sm" mb="0">{request.patientName}</Title>
+                      {request.matching?.selectedNurseIds?.length > 1 && (
+                        <StatusBadge status="info">
+                          {request.matching.selectedNurseIds.length} nurses notified
+                        </StatusBadge>
+                      )}
+                    </Flex>
                     <Text mb="0.5rem">{request.serviceDetails?.type}</Text>
                     <Text size="sm" muted mb="0.5rem">
                       Scheduled: {formattedScheduledDateTime(request.serviceDetails?.scheduledDateTime)}
@@ -258,7 +319,7 @@ const DashboardPage = () => {
                       <Button onClick={() => handleAcceptRequest(request.id)}>
                         Accept
                       </Button>
-                      <Button variant="secondary" onClick={() => handleDeclineRequest(request.id)}>
+                      <Button variant="secondary" onClick={() => handleDeclineRequest(request.id, request)}>
                         Decline
                       </Button>
                     </Flex>

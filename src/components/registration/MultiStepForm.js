@@ -9,7 +9,7 @@ import Button from '../ui/Button';
 
 // --- Helper Components for each step ---
 
-const Step1_BasicInfo = ({ nextStep, handleChange, values }) => (
+const Step1_BasicInfo = ({ nextStep, handleChange, values, getLocation }) => (
   <div className="stack">
     <h3>Step 1: Basic Information</h3>
     <div className="form-group">
@@ -27,6 +27,11 @@ const Step1_BasicInfo = ({ nextStep, handleChange, values }) => (
     <div className="form-group">
       <label className="form-label" htmlFor="district">District You Serve</label>
       <Input id="district" type="text" value={values.district} onChange={handleChange('district')} required />
+    </div>
+    <div className="form-group">
+      <Button variant="secondary" type="button" onClick={getLocation} style={{ marginTop: '0.5rem' }}>
+        Use My Current Location
+      </Button>
     </div>
     <div className="form-actions">
       <Button variant="primary" onClick={nextStep}>Next</Button>
@@ -89,12 +94,33 @@ const Step3_Services = ({ prevStep, handleArrayChange, values, handleSubmit }) =
 // --- Main Multi-Step Form Component ---
 
 function MultiStepForm() {
+  // Fetch device location and autofill latitude/longitude
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setFormData(prev => ({
+            ...prev,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          }));
+        },
+        (error) => {
+          setError('Unable to fetch location. Please enter manually.');
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by your browser.');
+    }
+  };
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
     district: '',
+    latitude: '',
+    longitude: '',
     licenseNumber: '',
     licenseState: '',
     licenseExpiryDate: '',
@@ -136,6 +162,10 @@ function MultiStepForm() {
         fullName: formData.fullName,
         email: formData.email,
         district: formData.district,
+        location: {
+          latitude: parseFloat(formData.latitude),
+          longitude: parseFloat(formData.longitude)
+        },
         licenseNumber: formData.licenseNumber,
         licenseState: formData.licenseState,
         licenseExpiryDate: formData.licenseExpiryDate,
@@ -175,7 +205,7 @@ function MultiStepForm() {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <Step1_BasicInfo nextStep={nextStep} handleChange={handleChange} values={formData} />;
+        return <Step1_BasicInfo nextStep={nextStep} handleChange={handleChange} values={formData} getLocation={getLocation} />;
       case 2:
         return <Step2_Credentials nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
       case 3:
