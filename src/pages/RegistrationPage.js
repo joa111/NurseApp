@@ -3,136 +3,171 @@ import React from 'react';
 import MultiStepForm from '../components/registration/MultiStepForm';
 import {
   Container,
-  Section,
-  Card,
   Title,
-  Text,
-  Flex
+  Text
 } from '../components/ui/DesignSystem';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-// Custom styled components for registration
-const RegistrationSection = styled(Section)`
-  background: linear-gradient(135deg, rgba(240, 253, 250, 0.4), rgba(236, 253, 245, 0.3));
-  min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
-  padding: 2rem 0;
+// Animation
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
-const RegistrationCard = styled(Card)`
-  max-width: 720px;
-  margin: 0 auto;
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 3rem 1rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(5, 150, 105, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.03) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
+`;
+
+const GlassCard = styled.div`
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  padding: 3rem;
   width: 100%;
+  max-width: 800px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+  animation: ${fadeIn} 0.6s ease-out;
+
+  @media (max-width: 640px) {
+    padding: 1.5rem;
+  }
 `;
 
 const HeaderSection = styled.div`
   text-align: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 3rem;
+  position: relative;
 `;
 
-const ProgressIndicator = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+const StyledTitle = styled(Title)`
+  background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.75rem;
 `;
 
-const ProgressStep = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: ${props => props.active ? '#059669' : '#d1d5db'};
-  transition: background-color 0.2s ease;
-`;
-
-const BenefitsList = styled.div`
+const BenefitsGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: rgba(240, 253, 250, 0.5);
-  border-radius: 12px;
-  border: 1px solid rgba(5, 150, 105, 0.1);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
   }
 `;
 
 const BenefitItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #374151;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.8);
+  }
 `;
 
 const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#059669', flexShrink: 0 }}>
-    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-  </svg>
+  <div style={{
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    background: '#d1fae5',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0
+  }}>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ color: '#059669' }}>
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+    </svg>
+  </div>
 );
 
 function RegistrationPage() {
   return (
-    <RegistrationSection>
+    <PageWrapper>
       <Container>
-        <RegistrationCard>
-          <HeaderSection>
-            <Title size="lg" mb="0.5rem">
-              Join NurseConnect
-            </Title>
-            <Text muted style={{ fontSize: '1rem' }}>
-              Complete your professional profile to start connecting with patients
-            </Text>
-            
-            {/* Progress indicator - you can make this dynamic based on form step */}
-            <ProgressIndicator>
-              <ProgressStep active />
-              <ProgressStep />
-              <ProgressStep />
-              <ProgressStep />
-            </ProgressIndicator>
-          </HeaderSection>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <GlassCard>
+            <HeaderSection>
+              <StyledTitle size="lg">
+                Join Nurses
+              </StyledTitle>
+              <Text muted style={{ fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
+                Create your professional account to connect with patients and manage your practice.
+              </Text>
+            </HeaderSection>
 
-          {/* Your existing MultiStepForm component */}
-          <MultiStepForm />
+            {/* Your existing MultiStepForm component */}
+            <MultiStepForm />
 
-          {/* Benefits section */}
-          <BenefitsList>
-            <BenefitItem>
-              <CheckIcon />
-              <span>Flexible scheduling</span>
-            </BenefitItem>
-            <BenefitItem>
-              <CheckIcon />
-              <span>Competitive rates</span>
-            </BenefitItem>
-            <BenefitItem>
-              <CheckIcon />
-              <span>Professional support</span>
-            </BenefitItem>
-            <BenefitItem>
-              <CheckIcon />
-              <span>Verified patients</span>
-            </BenefitItem>
-            <BenefitItem>
-              <CheckIcon />
-              <span>Secure payments</span>
-            </BenefitItem>
-            <BenefitItem>
-              <CheckIcon />
-              <span>24/7 assistance</span>
-            </BenefitItem>
-          </BenefitsList>
-        </RegistrationCard>
+            {/* Redesigned Benefits section */}
+            <BenefitsGrid>
+              <BenefitItem>
+                <CheckIcon />
+                <span>Flexible schedule & rates</span>
+              </BenefitItem>
+              <BenefitItem>
+                <CheckIcon />
+                <span>Secure weekly payments</span>
+              </BenefitItem>
+              <BenefitItem>
+                <CheckIcon />
+                <span>Verified patient leads</span>
+              </BenefitItem>
+            </BenefitsGrid>
+          </GlassCard>
+        </div>
       </Container>
-    </RegistrationSection>
+    </PageWrapper>
   );
 }
 
