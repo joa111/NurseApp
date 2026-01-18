@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import {
   NavBar,
   NavLogo,
-  NavLinks,
   NavLink,
   Button,
   IconButton,
@@ -17,11 +16,11 @@ import {
 } from './DesignSystem';
 
 // Import icons
-import { 
-  HomeIcon, 
-  UserIcon, 
-  LogoutIcon, 
-  MenuIcon, 
+import {
+  HomeIcon,
+  UserIcon,
+  LogoutIcon,
+  MenuIcon,
   CloseIcon,
   MedicalIcon
 } from './Icons';
@@ -171,12 +170,12 @@ const Navigation = () => {
   const { currentUser } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  
+
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location]);
-  
+
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -184,7 +183,7 @@ const Navigation = () => {
     } else {
       document.body.style.overflow = 'unset';
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -206,14 +205,14 @@ const Navigation = () => {
       <SkipLink href="#main-content">
         Skip to main content
       </SkipLink>
-      
+
       <NavBar>
         <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
           <NavLogo to="/">
             <MedicalIcon size={24} />
             <span>NurseConnect</span>
           </NavLogo>
-          
+
           {/* Desktop Navigation */}
           <DesktopLinks>
             {currentUser ? (
@@ -245,9 +244,9 @@ const Navigation = () => {
               </Flex>
             )}
           </DesktopLinks>
-          
+
           {/* Mobile Menu Button */}
-          <MobileToggle 
+          <MobileToggle
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
           >
@@ -255,13 +254,13 @@ const Navigation = () => {
           </MobileToggle>
         </Container>
       </NavBar>
-      
+
       {/* Mobile Menu Overlay */}
-      <MobileOverlay 
+      <MobileOverlay
         open={mobileMenuOpen}
         onClick={() => setMobileMenuOpen(false)}
       />
-      
+
       {/* Mobile Menu */}
       <MobileMenu open={mobileMenuOpen}>
         <MobileMenuHeader>
@@ -269,35 +268,35 @@ const Navigation = () => {
             <MedicalIcon size={24} />
             <span>NurseConnect</span>
           </NavLogo>
-          <IconButton 
+          <IconButton
             onClick={() => setMobileMenuOpen(false)}
             aria-label="Close navigation menu"
           >
             <CloseIcon size={24} />
           </IconButton>
         </MobileMenuHeader>
-        
+
         <MobileMenuContent>
           <MobileLinks>
             {currentUser ? (
               <>
-                <MobileNavLink 
-                  to="/" 
+                <MobileNavLink
+                  to="/"
                   active={isActive('/')}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <HomeIcon size={20} />
                   Home
                 </MobileNavLink>
-                <MobileNavLink 
-                  to="/dashboard" 
+                <MobileNavLink
+                  to="/dashboard"
                   active={isActive('/dashboard')}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Dashboard
                 </MobileNavLink>
-                <MobileNavLink 
-                  to="/profile" 
+                <MobileNavLink
+                  to="/profile"
                   active={isActive('/profile')}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -305,8 +304,8 @@ const Navigation = () => {
                   Profile
                 </MobileNavLink>
                 <MobileActions>
-                  <Button 
-                    variant="secondary" 
+                  <Button
+                    variant="secondary"
                     onClick={handleLogout}
                     style={{ width: '100%' }}
                   >
@@ -317,15 +316,15 @@ const Navigation = () => {
               </>
             ) : (
               <>
-                <MobileNavLink 
-                  to="/login" 
+                <MobileNavLink
+                  to="/login"
                   active={isActive('/login')}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Login
                 </MobileNavLink>
-                <MobileNavLink 
-                  to="/register" 
+                <MobileNavLink
+                  to="/register"
                   active={isActive('/register')}
                   onClick={() => setMobileMenuOpen(false)}
                 >

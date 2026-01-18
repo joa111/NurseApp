@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../services/firebase';
-import { 
+import {
   Container,
   Section,
   Card,
@@ -14,17 +14,16 @@ import {
   Loader,
   Checkbox
 } from '../components/ui/DesignSystem';
-import { 
-  collection, 
-  query, 
-  where, 
-  onSnapshot, 
-  doc, 
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
   updateDoc,
   orderBy,
   limit,
   arrayUnion,
-  arrayRemove,
   Timestamp
 } from 'firebase/firestore';
 
@@ -42,7 +41,7 @@ const DashboardPage = () => {
       console.log('No current user');
       return;
     }
-    
+
     console.log('Current nurse ID:', currentUser.uid);
 
     // Listen to nurse profile
@@ -78,7 +77,7 @@ const DashboardPage = () => {
             updated = updated.filter(req => req.id !== change.doc.id);
           }
         });
-        return updated.sort((a, b) => 
+        return updated.sort((a, b) =>
           (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
         ).slice(0, 10);
       });
@@ -105,7 +104,7 @@ const DashboardPage = () => {
             updated = updated.filter(req => req.id !== change.doc.id);
           }
         });
-        return updated.sort((a, b) => 
+        return updated.sort((a, b) =>
           (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
         ).slice(0, 10);
       });
@@ -165,7 +164,7 @@ const DashboardPage = () => {
     try {
       const remainingNurses = (request.matching?.selectedNurseIds || [])
         .filter(id => id !== currentUser.uid);
-      
+
       const updateData = {
         'matching.selectedNurseIds': remainingNurses,
         'matching.declinedBy': arrayUnion(currentUser.uid)
@@ -263,12 +262,12 @@ const DashboardPage = () => {
               {isOnline ? 'Active' : 'Offline'}
             </StatusBadge>
           </Flex>
-          
+
           <Flex align="center" gap="0.5rem">
             <Checkbox>
-              <input 
-                type="checkbox" 
-                checked={isOnline} 
+              <input
+                type="checkbox"
+                checked={isOnline}
                 onChange={toggleOnlineStatus}
               />
               <label>
