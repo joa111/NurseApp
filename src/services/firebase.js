@@ -7,7 +7,7 @@ import { getStorage } from "firebase/storage";
 
 // --- IMPORTANT ---
 // PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE
-const firebaseConfig = {  
+const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
@@ -45,6 +45,6 @@ export const getNurseServiceRequests = (nurseId, callback) => {
     where('matching.selectedNurseId', '==', nurseId),
     where('status', '==', 'pending-response')
   );
-  
+
   return onSnapshot(q, callback);
 };

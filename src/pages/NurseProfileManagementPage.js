@@ -70,7 +70,7 @@ const NurseProfileManagementPage = () => {
       const serviceName = name.split('-')[1];
       setFormData(prev => ({
         ...prev,
-        services: prev.services.map(s => 
+        services: prev.services.map(s =>
           s.name === serviceName ? { ...s, rate: parseFloat(value) } : s
         )
       }));
@@ -151,10 +151,10 @@ const NurseProfileManagementPage = () => {
           <Title size="lg" mb="1.5rem">Manage Your Profile</Title>
 
           {message && (
-            <div style={{ 
-              padding: '1rem', 
-              backgroundColor: 'rgba(34, 197, 94, 0.15)', 
-              color: '#059669', 
+            <div style={{
+              padding: '1rem',
+              backgroundColor: 'rgba(34, 197, 94, 0.15)',
+              color: '#059669',
               borderRadius: '8px',
               marginBottom: '1.5rem'
             }}>
@@ -167,11 +167,11 @@ const NurseProfileManagementPage = () => {
           <form onSubmit={handleUpdateProfile}>
             <Card padding="1.5rem" style={{ marginBottom: '2rem' }}>
               <Subtitle size="lg" mb="1rem">Rates</Subtitle>
-              
+
               <Grid columns={2} gap="1.5rem">
                 <FormGroup>
                   <Label htmlFor="hourlyRate">Hourly Rate ($)</Label>
-                  <Input 
+                  <Input
                     id="hourlyRate"
                     type="number"
                     name="hourlyRate"
@@ -181,10 +181,10 @@ const NurseProfileManagementPage = () => {
                     required
                   />
                 </FormGroup>
-                
+
                 <FormGroup>
                   <Label htmlFor="emergencyRate">Emergency Rate ($)</Label>
-                  <Input 
+                  <Input
                     id="emergencyRate"
                     type="number"
                     name="emergencyRate"
@@ -204,7 +204,7 @@ const NurseProfileManagementPage = () => {
                       <Grid columns={2} gap="1.5rem" key={service.name}>
                         <FormGroup>
                           <Label>{service.name.replace('-', ' ').toUpperCase()}</Label>
-                          <Input 
+                          <Input
                             type="number"
                             name={`serviceRate-${service.name}`}
                             value={service.rate}
@@ -224,10 +224,10 @@ const NurseProfileManagementPage = () => {
 
             <Card padding="1.5rem" style={{ marginBottom: '2rem' }}>
               <Subtitle size="lg" mb="1rem">Availability & Preferences</Subtitle>
-              
+
               <FormGroup>
                 <Label htmlFor="serviceRadius">Service Radius (km)</Label>
-                <Input 
+                <Input
                   id="serviceRadius"
                   type="number"
                   name="serviceRadius"
@@ -237,7 +237,7 @@ const NurseProfileManagementPage = () => {
                   required
                 />
               </FormGroup>
-              
+
               <Text muted size="sm">Schedule management coming soon...</Text>
             </Card>
 
