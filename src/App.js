@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navigation from './components/ui/Navigation';
+import { GlobalStyles } from './styles/GlobalStyles';
+import './styles/main.css';
 
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -12,6 +14,7 @@ import NurseProfileManagementPage from './pages/NurseProfileManagementPage';
 function App() {
   return (
     <AuthProvider>
+      <GlobalStyles />
       <Router>
         <div className="App">
           <Navigation />
