@@ -65,7 +65,7 @@ const NurseProfileManagementPage = () => {
   }, [currentUser]);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
     if (name.startsWith('serviceRate-')) {
       const serviceName = name.split('-')[1];
       setFormData(prev => ({

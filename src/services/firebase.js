@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, query, where, getDocs, updateDoc, doc, onSnapshot, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, query, where, updateDoc, doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // --- IMPORTANT ---
