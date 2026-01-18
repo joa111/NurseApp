@@ -99,7 +99,7 @@ const StyledCheckbox = styled.div`
 
 // --- Helper Components for each step ---
 
-const Step1_BasicInfo = ({ nextStep, handleChange, values, getLocation }) => (
+const Step1BasicInfo = ({ nextStep, handleChange, values, getLocation }) => (
   <FormContainer>
     <StepTitle as="h3">Basic Information</StepTitle>
     <StepDescription>Let's start with your personal details.</StepDescription>
@@ -138,7 +138,7 @@ const Step1_BasicInfo = ({ nextStep, handleChange, values, getLocation }) => (
   </FormContainer>
 );
 
-const Step2_Credentials = ({ nextStep, prevStep, handleChange, values }) => (
+const Step2Credentials = ({ nextStep, prevStep, handleChange, values }) => (
   <FormContainer>
     <StepTitle as="h3">Professional Credentials</StepTitle>
     <StepDescription>Verify your nursing license details.</StepDescription>
@@ -165,14 +165,14 @@ const Step2_Credentials = ({ nextStep, prevStep, handleChange, values }) => (
   </FormContainer>
 );
 
-const Step3_Services = ({ prevStep, handleArrayChange, values, handleSubmit }) => {
+const Step3Services = ({ prevStep, handleArrayChange, values, handleSubmit }) => {
   const allServices = ["Wound Care", "IV Therapy", "Medication Administration", "Post-Op Care", "Geriatric Care"];
   return (
     <FormContainer>
       <StepTitle as="h3">Services Offered</StepTitle>
       <StepDescription>Select the services you are qualified to provide.</StepDescription>
 
-      <Grid columns={1} gap="0.75rem">
+      <Grid columns={1} gap="1rem">
         {allServices.map(service => (
           <StyledCheckbox key={service} onClick={() => handleArrayChange('services', service)}>
             <input
@@ -311,11 +311,11 @@ function MultiStepForm() {
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <Step1_BasicInfo nextStep={nextStep} handleChange={handleChange} values={formData} getLocation={getLocation} />;
+        return <Step1BasicInfo nextStep={nextStep} handleChange={handleChange} values={formData} getLocation={getLocation} />;
       case 2:
-        return <Step2_Credentials nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
+        return <Step2Credentials nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
       case 3:
-        return <Step3_Services prevStep={prevStep} handleArrayChange={handleArrayChange} values={formData} handleSubmit={handleSubmit} />;
+        return <Step3Services prevStep={prevStep} handleArrayChange={handleArrayChange} values={formData} handleSubmit={handleSubmit} />;
       default:
         return <p>Loading form...</p>;
     }
